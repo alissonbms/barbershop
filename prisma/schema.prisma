@@ -18,17 +18,15 @@ model User {
 
 model Barbershop {
   id          String              @id @default(uuid())
-  name        String
-  description String
+  name        String  
   address     String
-  imageUrl    String
-  phones      String[]
+  imageUrl    String  
   createdAt   DateTime            @default(now())
   updatedAt   DateTime            @updatedAt
-  services    BarbershopService[]
+  services    Service[]
 }
 
-model BarbershopService {
+model Service {
   id           String     @id @default(uuid())
   name         String
   description  String
@@ -47,5 +45,5 @@ model Booking {
   userId              String
   user                User              @relation(fields: [userId], references: [id])
   serviceId String
-  service   BarbershopService @relation(fields: [serviceId], references: [id])
+  service   Service @relation(fields: [serviceId], references: [id])
 }
