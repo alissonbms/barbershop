@@ -24,7 +24,6 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col">
-      <Header />
       <div className="fle p-5 text-myGray">
         <h2 className="text-xl font-bold">Olá, Davies!</h2>
         <p>Quarta-feira, 25 de setembro</p>
@@ -67,8 +66,6 @@ export default async function Home() {
           ))}
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }
