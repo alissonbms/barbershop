@@ -7,9 +7,19 @@ import Booking from "./_components/ui/booking";
 import SectionTitle from "./_components/ui/section-title";
 import { db } from "./_lib/prisma";
 import BarbershopItem from "./_components/ui/barbershop-item";
+import Footer from "./_components/ui/footer";
 
 export default async function Home() {
-  const barbershops = await db.barbershop.findMany({});
+  const barbershops = await db.barbershop.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+  const popularBarbershops = await db.barbershop.findMany({
+    orderBy: {
+      name: "desc",
+    },
+  });
 
   return (
     <div className="flex flex-col">
@@ -36,14 +46,26 @@ export default async function Home() {
 
         <SectionTitle title="Agendamentos" />
         <Booking />
-        <SectionTitle title="Barbearias" />
 
+        <SectionTitle title="Recomendadas" />
         <div className="flex flex-row gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
           {(await barbershops).map((barbershop) => (
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
+
+        <SectionTitle title="Populares" />
+        <div className="flex flex-row gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
+          {popularBarbershops.map((popularBarbershop) => (
+            <BarbershopItem
+              key={popularBarbershop.id}
+              barbershop={popularBarbershop}
+            />
+          ))}
+        </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
