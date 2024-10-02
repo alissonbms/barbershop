@@ -5,8 +5,12 @@ import { Input } from "./_components/ui/input";
 import Image from "next/image";
 import Booking from "./_components/ui/booking";
 import SectionTitle from "./_components/ui/section-title";
+import { db } from "./_lib/prisma";
+import BarbershopItem from "./_components/ui/barbershop-item";
 
-export default function Home() {
+export default async function Home() {
+  const barbershops = await db.barbershop.findMany({});
+
   return (
     <div className="flex flex-col">
       <Header />
@@ -32,6 +36,13 @@ export default function Home() {
 
         <SectionTitle title="Agendamentos" />
         <Booking />
+        <SectionTitle title="Barbearias" />
+
+        <div className="flex flex-row gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
+          {(await barbershops).map((barbershop) => (
+            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+          ))}
+        </div>
       </div>
     </div>
   );
