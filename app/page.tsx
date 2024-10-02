@@ -8,6 +8,7 @@ import SectionTitle from "./_components/ui/section-title";
 import { db } from "./_lib/prisma";
 import BarbershopItem from "./_components/ui/barbershop-item";
 import Footer from "./_components/ui/footer";
+import QuickSearch from "./_components/ui/quick-search";
 
 export default async function Home() {
   const barbershops = await db.barbershop.findMany({
@@ -35,7 +36,9 @@ export default async function Home() {
           </Button>
         </div>
 
-        <div className="relative mt-6 h-[150px] w-full">
+        <QuickSearch />
+
+        <div className="relative h-[150px] w-full">
           <Image
             src="/banner-1.png"
             fill
