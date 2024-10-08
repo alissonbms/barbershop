@@ -17,12 +17,13 @@ model User {
 }
 
 model Barbershop {
-  id          String              @id @default(uuid())
-  name        String  
+  id          String    @id @default(uuid())
+  name        String
   address     String
-  imageUrl    String  
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
+  imageUrl    String
+  description String    @default("Seja bem-vindo à nossa barbearia, onde tradição e estilo se encontram em perfeita harmonia. Nossa equipe de mestres barbeiros transforma cortes de cabelo e barbas em obras de arte. Em um ambiente acolhedor, promovemos confiança, estilo e uma comunidade unida.")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   services    Service[]
 }
 
@@ -38,12 +39,12 @@ model Service {
 }
 
 model Booking {
-  id                  String            @id @default(uuid())
-  date                DateTime
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
-  userId              String
-  user                User              @relation(fields: [userId], references: [id])
+  id        String   @id @default(uuid())
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
   serviceId String
-  service   Service @relation(fields: [serviceId], references: [id])
+  service   Service  @relation(fields: [serviceId], references: [id])
 }

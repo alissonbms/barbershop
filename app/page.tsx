@@ -46,17 +46,17 @@ export default async function Home() {
           />
         </div>
 
-        <SectionTitle title="Agendamentos" />
+        <SectionTitle title="Agendamentos" className="mt-6" />
         <Booking />
 
-        <SectionTitle title="Recomendadas" />
+        <SectionTitle title="Recomendadas" className="mt-6" />
         <div className="flex flex-row gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
           {(await barbershops).map((barbershop) => (
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
 
-        <SectionTitle title="Populares" />
+        <SectionTitle title="Populares" className="mt-6" />
         <div className="flex flex-row gap-4 overflow-auto [&::-webkit-scrollbar]:hidden">
           {popularBarbershops.map((popularBarbershop) => (
             <BarbershopItem

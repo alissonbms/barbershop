@@ -1,9 +1,16 @@
-interface SectionTitleProps {
+import { cn } from "@/app/_lib/utils";
+
+interface SectionTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
   title: string;
 }
-const SectionTitle = ({ title }: SectionTitleProps) => {
+const SectionTitle = ({ title, className }: SectionTitleProps) => {
   return (
-    <h2 className="mb-2 mt-6 text-xs font-bold uppercase text-gray-500">
+    <h2
+      className={cn(
+        "mb-2 text-xs font-bold uppercase text-gray-500",
+        className,
+      )}
+    >
       {title}
     </h2>
   );
