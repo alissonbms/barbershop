@@ -3,6 +3,7 @@ import { db } from "@/app/_lib/prisma";
 import HeroSection from "./_components/hero-section";
 import { MapPinIcon, StarIcon } from "lucide-react";
 import SectionTitle from "@/app/_components/ui/section-title";
+import ServiceItem from "@/app/_components/ui/service-item";
 
 interface BarbershopPageProps {
   params: {
@@ -14,6 +15,9 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
   const barbershop = await db.barbershop.findUnique({
     where: {
       id: params.id,
+    },
+    include: {
+      services: true,
     },
   });
 
@@ -42,6 +46,15 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
       <div className="border-b-2 border-solid p-5">
         <SectionTitle title="Sobre nós" />
         <p className="text-justify text-sm">{barbershop.description}</p>
+      </div>
+
+      <div className="flex flex-col p-5">
+        <SectionTitle title="Serviços" />
+        <div className="flex flex-col gap-3">
+          {barbershop.services.map((service) => (
+            <ServiceItem key={service.id} service={service} />
+          ))}
+        </div>
       </div>
     </div>
   );
