@@ -10,7 +10,7 @@ const QuickSearch = () => {
         <Button
           key={quickSearchOption.title}
           variant="secondary"
-          className="flex min-w-[125px] items-center gap-1.5"
+          className="flex items-center gap-1.5 px-5"
         >
           <Image
             src={quickSearchOption.imageUrl}

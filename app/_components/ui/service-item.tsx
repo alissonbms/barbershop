@@ -18,9 +18,11 @@ const ServiceItem = ({ service }: ServiceItemProps) => {
             className="rounded-lg object-cover"
           />
         </div>
-        <div className="flex flex-col gap-2">
-          <h3 className="font-semibold">{service.name}</h3>
-          <p className="text-sm text-gray-700">{service.description}</p>
+        <div className="flex w-full flex-col gap-5">
+          <div className="flex flex-col gap-2">
+            <h3 className="font-semibold">{service.name}</h3>
+            <p className="text-sm text-gray-700">{service.description}</p>
+          </div>
 
           <div className="flex items-center justify-between">
             <p className="text-sm font-bold text-secondary">

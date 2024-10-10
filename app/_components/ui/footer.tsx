@@ -3,7 +3,7 @@ import { Card, CardContent } from "./card";
 
 const Footer = () => {
   return (
-    <footer>
+    <footer className="mt-4">
       <Card className="text-center">
         <CardContent className="py-4">
           <p className="text-sm">

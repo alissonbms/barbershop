@@ -4,6 +4,7 @@ import HeroSection from "./_components/hero-section";
 import { MapPinIcon, StarIcon } from "lucide-react";
 import SectionTitle from "@/app/_components/ui/section-title";
 import ServiceItem from "@/app/_components/ui/service-item";
+import PhoneItem from "./_components/phone-item";
 
 interface BarbershopPageProps {
   params: {
@@ -48,12 +49,21 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
         <p className="text-justify text-sm">{barbershop.description}</p>
       </div>
 
-      <div className="flex flex-col p-5">
+      <div className="flex flex-col border-b-2 border-solid p-5">
         <SectionTitle title="Serviços" />
         <div className="flex flex-col gap-3">
           {barbershop.services.map((service) => (
             <ServiceItem key={service.id} service={service} />
           ))}
+        </div>
+      </div>
+
+      <div className="p-5">
+        <SectionTitle title="Contatos" />
+
+        <div className="flex flex-col gap-3">
+          <PhoneItem phone="(15) 98775-4322" />
+          <PhoneItem phone="(12) 99466-9191" />
         </div>
       </div>
     </div>
