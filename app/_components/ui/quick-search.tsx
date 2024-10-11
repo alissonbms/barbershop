@@ -13,10 +13,10 @@ const QuickSearch = () => {
           className="flex items-center gap-1.5 px-5"
         >
           <Image
-            src={quickSearchOption.imageUrl}
+            src={quickSearchOption.whiteImageUrl}
             alt={quickSearchOption.title}
-            width={16}
-            height={16}
+            width={18}
+            height={18}
           />
           {quickSearchOption.title}
         </Button>

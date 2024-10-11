@@ -6,6 +6,8 @@ import Image from "next/image";
 import { Button } from "@/app/_components/ui/button";
 import { Barbershop } from "@prisma/client";
 import { ChevronLeftIcon, MenuIcon } from "lucide-react";
+import { Sheet, SheetTrigger } from "@/app/_components/ui/sheet";
+import SidebarSheet from "@/app/_components/ui/sidebar-sheet";
 
 interface HeroSectionProps {
   barbershop: Barbershop;
@@ -30,9 +32,14 @@ const HeroSection = ({ barbershop }: HeroSectionProps) => {
         >
           <ChevronLeftIcon />
         </Button>
-        <Button size="icon" className="absolute right-4 top-4">
-          <MenuIcon />
-        </Button>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button size="icon" className="absolute right-4 top-4">
+              <MenuIcon />
+            </Button>
+          </SheetTrigger>
+          <SidebarSheet />
+        </Sheet>
       </div>
     </div>
   );

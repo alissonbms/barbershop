@@ -1,36 +1,43 @@
 interface quickSearchOptionsProps {
   title: string;
-  imageUrl: string;
+  whiteImageUrl: string;
+  blackImageUrl: string;
 }
 
 export const quickSearchOptions: quickSearchOptionsProps[] = [
   {
     title: "Cabelo",
-    imageUrl: "/cabelo.svg",
+    whiteImageUrl: "/white_cabelo.svg",
+    blackImageUrl: "/black_cabelo.svg",
   },
 
   {
     title: "Barba",
-    imageUrl: "/barba.svg",
+    whiteImageUrl: "/white_barba.svg",
+    blackImageUrl: "/black_barba.svg",
   },
 
   {
     title: "Acabamento",
-    imageUrl: "/acabamento.svg",
+    whiteImageUrl: "/white_acabamento.svg",
+    blackImageUrl: "/black_acabamento.svg",
   },
 
   {
     title: "Sobrancelha",
-    imageUrl: "/sobrancelha.svg",
+    whiteImageUrl: "/white_sobrancelha.svg",
+    blackImageUrl: "/black_sobrancelha.svg",
   },
 
   {
     title: "Massagem",
-    imageUrl: "/massagem.svg",
+    whiteImageUrl: "/white_massagem.svg",
+    blackImageUrl: "/black_massagem.svg",
   },
 
   {
     title: "Hidratacão",
-    imageUrl: "/hidratacao.svg",
+    whiteImageUrl: "/white_hidratacao.svg",
+    blackImageUrl: "/black_hidratacao.svg",
   },
 ];
