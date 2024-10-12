@@ -1,22 +1,20 @@
 import { SearchIcon } from "lucide-react";
 import { Button } from "../../_components/ui/button";
-import Header from "../../_components/ui/header";
 import { Input } from "../../_components/ui/input";
 import Image from "next/image";
 import Booking from "../../_components/ui/booking";
 import SectionTitle from "../../_components/ui/section-title";
-import { db } from "../../_lib/prisma";
+import { prisma } from "../../_lib/prisma";
 import BarbershopItem from "../../_components/ui/barbershop-item";
-import Footer from "../../_components/ui/footer";
 import QuickSearch from "../../_components/ui/quick-search";
 
 export default async function Home() {
-  const barbershops = await db.barbershop.findMany({
+  const barbershops = await prisma.barbershop.findMany({
     orderBy: {
       name: "asc",
     },
   });
-  const popularBarbershops = await db.barbershop.findMany({
+  const popularBarbershops = await prisma.barbershop.findMany({
     orderBy: {
       name: "desc",
     },

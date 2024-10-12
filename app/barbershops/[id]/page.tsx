@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { db } from "@/app/_lib/prisma";
+import { prisma } from "@/app/_lib/prisma";
 import HeroSection from "./_components/hero-section";
 import { MapPinIcon, StarIcon } from "lucide-react";
 import SectionTitle from "@/app/_components/ui/section-title";
@@ -13,7 +13,7 @@ interface BarbershopPageProps {
 }
 
 const BarbershopPage = async ({ params }: BarbershopPageProps) => {
-  const barbershop = await db.barbershop.findUnique({
+  const barbershop = await prisma.barbershop.findUnique({
     where: {
       id: params.id,
     },
