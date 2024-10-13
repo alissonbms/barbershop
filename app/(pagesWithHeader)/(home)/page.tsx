@@ -7,8 +7,11 @@ import SectionTitle from "../../_components/ui/section-title";
 import { prisma } from "../../_lib/prisma";
 import BarbershopItem from "../../_components/ui/barbershop-item";
 import QuickSearch from "../../_components/ui/quick-search";
+import { auth } from "@/app/_lib/auth";
 
 export default async function Home() {
+  const session = await auth();
+
   const barbershops = await prisma.barbershop.findMany({
     orderBy: {
       name: "asc",
@@ -23,7 +26,12 @@ export default async function Home() {
   return (
     <div className="flex flex-col">
       <div className="fle p-5 text-myGray">
-        <h2 className="text-xl font-bold">Olá, Davies!</h2>
+        <h2 className="text-xl font-bold">
+          Olá,{" "}
+          {session?.user && session.user.name
+            ? session.user.name.split(" ", 1).slice(0)
+            : "seja bem-vindo!"}
+        </h2>
         <p>Quarta-feira, 25 de setembro</p>
 
         <div className="mt-6 flex flex-row gap-2">

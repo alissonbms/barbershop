@@ -1,9 +1,4 @@
-import {
-  CalendarFoldIcon,
-  HomeIcon,
-  LogInIcon,
-  LogOutIcon,
-} from "lucide-react";
+import { CalendarFoldIcon, HomeIcon, InfoIcon, LogInIcon } from "lucide-react";
 import {
   SheetClose,
   SheetContent,
@@ -11,7 +6,11 @@ import {
   SheetTitle,
 } from "@/app/_components/ui/sheet";
 import { quickSearchOptions } from "@/app/_constants/search";
-import { Avatar, AvatarImage } from "@/app/_components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/app/_components/ui/avatar";
 import Link from "next/link";
 import { Button } from "./button";
 import Image from "next/image";
@@ -23,24 +22,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./dialog";
+import { SignIn } from "./signin-button";
+import { auth } from "@/app/_lib/auth";
+import { LogOut } from "./logout-button";
 
-const SidebarSheet = () => {
-  const user = false;
+const SidebarSheet = async () => {
+  const session = await auth();
+
   return (
     <SheetContent className="overflow-y-auto">
       <SheetHeader>
         <SheetTitle className="text-left">Menu</SheetTitle>
       </SheetHeader>
 
-      {user ? (
+      {session?.user ? (
         <div className="flex items-center gap-3 border-b border-solid border-gray-300 py-5">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>
+              {session.user.name?.[0].toUpperCase()}
+            </AvatarFallback>
+
+            {session.user.image && <AvatarImage src={session.user.image} />}
           </Avatar>
 
           <div className="flex flex-col gap-0.5">
-            <p className="font-bold">Davies</p>
-            <span className="text-xs text-gray-700">davies@gmail.com</span>
+            <p className="font-bold">{session.user.name}</p>
+            <span className="text-xs text-gray-700">{session.user.email}</span>
           </div>
         </div>
       ) : (
@@ -60,15 +67,7 @@ const SidebarSheet = () => {
                   Conecte-se usando sua conta do Google
                 </DialogDescription>
               </DialogHeader>
-              <Button className="flex items-center gap-1">
-                <Image
-                  src="../google.svg"
-                  alt="login with google"
-                  width={18}
-                  height={18}
-                />
-                <p className="text-sm font-bold">Google</p>
-              </Button>
+              <SignIn />
             </DialogContent>
           </Dialog>
         </div>
@@ -94,7 +93,7 @@ const SidebarSheet = () => {
           <CalendarFoldIcon size={18} /> <p>Agendamentos</p>
         </Button>
       </div>
-      <div className="flex flex-col gap-4 border-b border-solid border-gray-300 p-5">
+      <div className="flex flex-col gap-4 p-5">
         {quickSearchOptions.map((quickSearchOption, index) => (
           <Button
             variant="ghost"
@@ -112,15 +111,18 @@ const SidebarSheet = () => {
           </Button>
         ))}
       </div>
-
-      <div className="flex p-5">
-        <Button
-          variant="secondary"
-          className="flex w-full items-center justify-start gap-2"
-        >
-          <LogOutIcon size={18} /> <p>Sair da conta</p>
-        </Button>
-      </div>
+      {session?.user ? (
+        <LogOut />
+      ) : (
+        <div className="flex border-t border-solid border-gray-300 px-5 pt-5">
+          <Button
+            variant="secondary"
+            className="flex w-full items-center justify-start gap-2"
+          >
+            <InfoIcon size={18} /> <p>Sobre a Davies Barber</p>
+          </Button>
+        </div>
+      )}
     </SheetContent>
   );
 };

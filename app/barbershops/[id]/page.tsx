@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { prisma } from "@/app/_lib/prisma";
 import HeroSection from "./_components/hero-section";
 import { MapPinIcon, StarIcon } from "lucide-react";
@@ -23,7 +23,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
   });
 
   if (!barbershop) {
-    redirect("http://localhost:3000");
+    return notFound();
   }
 
   return (
