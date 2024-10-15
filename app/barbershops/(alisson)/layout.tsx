@@ -1,10 +1,10 @@
-import "../globals.css";
+import "../../globals.css";
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Header from "../_components/ui/header";
-import Footer from "../_components/ui/footer";
-import { Toaster } from "../_components/ui/sonner";
+import Footer from "../../_components/ui/footer";
+import Header from "@/app/_components/ui/header";
+import { Toaster } from "../../_components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 

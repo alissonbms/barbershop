@@ -25,6 +25,7 @@ import {
 import { SignIn } from "./signin-button";
 import { auth } from "@/app/_lib/auth";
 import { LogOut } from "./logout-button";
+import QuickSearch from "./quick-search";
 
 const SidebarSheet = async () => {
   const session = await auth();
@@ -93,24 +94,9 @@ const SidebarSheet = async () => {
           <CalendarFoldIcon size={18} /> <p>Agendamentos</p>
         </Button>
       </div>
-      <div className="flex flex-col gap-4 p-5">
-        {quickSearchOptions.map((quickSearchOption, index) => (
-          <Button
-            variant="ghost"
-            key={quickSearchOption.title + index}
-            className="flex w-full items-center justify-start gap-2 hover:bg-inherit hover:text-secondary"
-          >
-            <div className="fill-primary text-primary"></div>
-            <Image
-              src={quickSearchOption.blackImageUrl}
-              alt={quickSearchOption.title}
-              width={18}
-              height={18}
-            />
-            <p>{quickSearchOption.title}</p>
-          </Button>
-        ))}
-      </div>
+
+      <QuickSearch sheet={true} />
+
       {session?.user ? (
         <LogOut />
       ) : (
