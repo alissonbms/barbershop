@@ -32,7 +32,9 @@ const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
 
         <div className="flex flex-col gap-2 px-2">
           <h3 className="truncate font-semibold">{barbershop.name}</h3>
-          <p className="truncate text-sm text-gray-700">{barbershop.address}</p>
+          <p className="truncate text-sm text-gray_primary">
+            {barbershop.address}
+          </p>
           <Button asChild>
             <Link href={`/barbershops/${barbershop.id}`}>Reservar</Link>
           </Button>

@@ -3,7 +3,7 @@ import { prisma } from "@/app/_lib/prisma";
 import HeroSection from "./_components/hero-section";
 import { MapPinIcon, StarIcon } from "lucide-react";
 import SectionTitle from "@/app/_components/ui/section-title";
-import ServiceItem from "@/app/_components/ui/service-item";
+import ServiceItem from "@/app/barbershops/[id]/_components/service-item";
 import PhoneItem from "./_components/phone-item";
 
 interface BarbershopPageProps {
@@ -53,7 +53,11 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
         <SectionTitle title="Serviços" />
         <div className="flex flex-col gap-3">
           {barbershop.services.map((service) => (
-            <ServiceItem key={service.id} service={service} />
+            <ServiceItem
+              key={service.id}
+              service={service}
+              barbershop={barbershop}
+            />
           ))}
         </div>
       </div>

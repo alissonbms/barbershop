@@ -31,7 +31,7 @@ const SidebarSheet = async () => {
   const session = await auth();
 
   return (
-    <SheetContent className="overflow-y-auto">
+    <SheetContent className="overflow-y-auto bg-background">
       <SheetHeader>
         <SheetTitle className="text-left">Menu</SheetTitle>
       </SheetHeader>
@@ -48,7 +48,9 @@ const SidebarSheet = async () => {
 
           <div className="flex flex-col gap-0.5">
             <p className="font-bold">{session.user.name}</p>
-            <span className="text-xs text-gray-700">{session.user.email}</span>
+            <span className="text-xs text-gray_primary">
+              {session.user.email}
+            </span>
           </div>
         </div>
       ) : (
