@@ -15,13 +15,25 @@ import {
 import { Calendar } from "../../../_components/ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { useEffect, useState } from "react";
-import { add, format, getHours, getMinutes, isEqual, set } from "date-fns";
+import {
+  add,
+  format,
+  getHours,
+  getMinutes,
+  isAfter,
+  isEqual,
+  isFuture,
+  isPast,
+  set,
+  startOfDay,
+} from "date-fns";
 import { createBooking } from "@/app/_actions/create-booking";
 import { getBookings } from "@/app/_actions/get-bookings";
 import { toast } from "sonner";
 import { Dialog, DialogContent } from "@/app/_components/ui/dialog";
 import SignInDialog from "@/app/_components/ui/sign-in-dialog";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface ServiceItemProps {
   service: Service;
@@ -29,6 +41,7 @@ interface ServiceItemProps {
 }
 const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
   const handleDateSelect = (date: Date | undefined) => {
@@ -93,7 +106,12 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
           return isEqual(i, booking.date);
         })
       ) {
-        times.push(i);
+        if (
+          !isEqual(selectedDay, startOfDay(new Date()))
+            ? isFuture(selectedDay) && times.push(i)
+            : isAfter(i, new Date()) && times.push(i)
+        ) {
+        }
       }
     }
 
@@ -118,8 +136,9 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
         date: newDate,
       });
       toast.success("Reserva criada com sucesso!");
+      return router.push("/");
     } catch (error) {
-      toast.error("Erro ao criar a reserva!");
+      return toast.error("Erro ao criar a reserva!");
     }
   };
 
