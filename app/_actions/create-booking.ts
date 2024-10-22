@@ -1,15 +1,24 @@
 "use server";
 
+import { auth } from "../_lib/auth";
 import { prisma } from "../_lib/prisma";
 
 interface CreateBookingProps {
-  userId: string;
   serviceId: string;
   date: Date;
 }
 
-export const createBooking = async (props: CreateBookingProps) => {
+export const createBooking = async ({
+  serviceId,
+  date,
+}: CreateBookingProps) => {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error("Usuário não autenticado!");
+  }
+
   return await prisma.booking.create({
-    data: props,
+    data: { serviceId: serviceId, date: date, userId: session?.user?.id },
   });
 };
