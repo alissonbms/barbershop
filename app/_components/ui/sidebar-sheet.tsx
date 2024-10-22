@@ -5,7 +5,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/app/_components/ui/sheet";
-import { quickSearchOptions } from "@/app/_constants/search";
 import {
   Avatar,
   AvatarFallback,
@@ -13,19 +12,11 @@ import {
 } from "@/app/_components/ui/avatar";
 import Link from "next/link";
 import { Button } from "./button";
-import Image from "next/image";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./dialog";
-import { SignIn } from "./signin-button";
+import { Dialog, DialogContent, DialogTrigger } from "./dialog";
 import { auth } from "@/app/_lib/auth";
 import { LogOut } from "./logout-button";
 import QuickSearch from "./quick-search";
+import SignInDialog from "./sign-in-dialog";
 
 const SidebarSheet = async () => {
   const session = await auth();
@@ -64,13 +55,7 @@ const SidebarSheet = async () => {
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-[80%] rounded-lg">
-              <DialogHeader>
-                <DialogTitle>Fazer login na plataforma</DialogTitle>
-                <DialogDescription>
-                  Conecte-se usando sua conta do Google
-                </DialogDescription>
-              </DialogHeader>
-              <SignIn />
+              <SignInDialog />
             </DialogContent>
           </Dialog>
         </div>

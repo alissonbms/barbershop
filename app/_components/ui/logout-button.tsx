@@ -1,26 +1,20 @@
-"use server";
+"use client";
 
-import { signOut } from "@/app/_lib/auth";
+import { signOut } from "next-auth/react";
 import { Button } from "./button";
 import { LogOutIcon } from "lucide-react";
 
-export async function LogOut() {
+export function LogOut() {
+  const handleLogoutClick = () => signOut();
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signOut();
-      }}
-    >
-      <div className="flex border-t border-solid border-gray-300 px-5 pt-5">
-        <Button
-          type="submit"
-          variant="secondary"
-          className="flex w-full items-center justify-start gap-2"
-        >
-          <LogOutIcon size={18} /> <p>Sair da conta</p>
-        </Button>
-      </div>
-    </form>
+    <div className="flex border-t border-solid border-gray-300 px-5 pt-5">
+      <Button
+        variant="secondary"
+        className="flex w-full items-center justify-start gap-2"
+        onClick={handleLogoutClick}
+      >
+        <LogOutIcon size={18} /> <p>Sair da conta</p>
+      </Button>
+    </div>
   );
 }

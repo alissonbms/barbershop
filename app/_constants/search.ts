@@ -36,7 +36,7 @@ export const quickSearchOptions: quickSearchOptionsProps[] = [
   },
 
   {
-    title: "Hidratacão",
+    title: "Hidratação",
     whiteImageUrl: "/white_hidratacao.svg",
     blackImageUrl: "/black_hidratacao.svg",
   },

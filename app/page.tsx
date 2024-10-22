@@ -36,10 +36,17 @@ export default async function Home() {
         </h2>
 
         <p>
-          {" "}
-          {format(new Date(), "EEEE', ' dd 'de' MMMM", {
-            locale: ptBR,
-          })}
+          <span className="capitalize">
+            {format(new Date(), "EEEE', ' d", {
+              locale: ptBR,
+            })}
+          </span>
+          {" de "}
+          <span className="capitalize">
+            {format(new Date(), "MMMM", {
+              locale: ptBR,
+            })}
+          </span>
         </p>
 
         <div className="mt-6">
