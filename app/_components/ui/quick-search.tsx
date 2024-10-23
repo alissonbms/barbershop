@@ -40,7 +40,7 @@ const QuickSearch = ({ sheet }: QuickSearchProps) => {
           ))}
         </div>
       ) : (
-        <div className="flex gap-2.5 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-2.5 overflow-x-auto [&::-webkit-scrollbar]:hidden">
           {quickSearchOptions.map((quickSearchOption) => (
             <Button
               key={quickSearchOption.title}

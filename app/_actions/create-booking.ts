@@ -2,6 +2,7 @@
 
 import { auth } from "../_lib/auth";
 import { prisma } from "../_lib/prisma";
+import { revalidatePath } from "next/cache";
 
 interface CreateBookingProps {
   serviceId: string;
@@ -18,7 +19,9 @@ export const createBooking = async ({
     throw new Error("Usuário não autenticado!");
   }
 
-  return await prisma.booking.create({
+  await prisma.booking.create({
     data: { serviceId: serviceId, date: date, userId: session?.user?.id },
   });
+  revalidatePath("/barbershops/[id]");
+  revalidatePath("/bookings");
 };

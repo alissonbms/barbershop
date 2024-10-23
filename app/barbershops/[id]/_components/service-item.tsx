@@ -213,7 +213,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                     />
                   </div>
                   {times && times?.length > 0 && (
-                    <div className="flex gap-2 overflow-x-scroll border-b border-solid border-gray-300 p-5 [&::-webkit-scrollbar]:hidden">
+                    <div className="flex gap-2 overflow-x-auto border-b border-solid border-gray-300 p-5 [&::-webkit-scrollbar]:hidden">
                       {times.map((time, i) => (
                         <Button
                           key={`${time}-${i}`}

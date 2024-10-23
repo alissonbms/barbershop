@@ -24,9 +24,12 @@ export default async function Home() {
     },
   });
 
-  const bookings = await prisma.booking.findMany({
+  const confirmedBookings = await prisma.booking.findMany({
     where: {
       userId: session?.user?.id,
+      date: {
+        gte: new Date(),
+      },
     },
     include: {
       service: {
@@ -34,6 +37,9 @@ export default async function Home() {
           barbershop: true,
         },
       },
+    },
+    orderBy: {
+      date: "asc",
     },
   });
 
@@ -80,11 +86,11 @@ export default async function Home() {
           />
         </div>
 
-        {bookings.length > 0 && (
+        {session?.user && confirmedBookings.length > 0 && (
           <>
             <SectionTitle title="Reservas" className="mt-6" />
-            <div className="flex flex-row gap-4 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
-              {bookings.map((booking) => (
+            <div className="flex flex-row gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+              {confirmedBookings.map((booking) => (
                 <BookingItem key={booking.id} booking={booking} />
               ))}
             </div>
@@ -92,14 +98,14 @@ export default async function Home() {
         )}
 
         <SectionTitle title="Recomendadas" className="mt-6" />
-        <div className="flex flex-row gap-4 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+        <div className="flex flex-row gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
           {(await barbershops).map((barbershop) => (
             <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
 
         <SectionTitle title="Populares" className="mt-6" />
-        <div className="flex flex-row gap-4 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+        <div className="flex flex-row gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
           {popularBarbershops.map((popularBarbershop) => (
             <BarbershopItem
               key={popularBarbershop.id}
