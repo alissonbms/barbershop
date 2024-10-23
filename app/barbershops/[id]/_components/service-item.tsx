@@ -14,7 +14,7 @@ import {
 } from "../../../_components/ui/sheet";
 import { Calendar } from "../../../_components/ui/calendar";
 import { ptBR } from "date-fns/locale";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   add,
   format,
@@ -23,9 +23,8 @@ import {
   isAfter,
   isEqual,
   isFuture,
-  isPast,
+  isToday,
   set,
-  startOfDay,
 } from "date-fns";
 import { createBooking } from "@/app/_actions/create-booking";
 import { getBookings } from "@/app/_actions/get-bookings";
@@ -39,6 +38,39 @@ interface ServiceItemProps {
   service: Service;
   barbershop: Pick<Barbershop, "name">;
 }
+
+interface GetTimesProps {
+  dayBookings: Booking[];
+  selectedDay: Date;
+}
+
+const getTimes = ({ selectedDay, dayBookings }: GetTimesProps) => {
+  if (!selectedDay) return;
+
+  const opening = add(selectedDay, { hours: 9 });
+  const closing = add(selectedDay, { hours: 18 });
+  const interval = 30;
+
+  const times: Date[] = [];
+
+  for (let i = opening; i <= closing; i = add(i, { minutes: interval })) {
+    if (
+      !dayBookings.some(function (booking) {
+        return isEqual(i, booking.date);
+      })
+    ) {
+      if (
+        isToday(selectedDay)
+          ? isAfter(i, new Date()) && times.push(i)
+          : isFuture(selectedDay) && times.push(i)
+      ) {
+      }
+    }
+  }
+
+  return times;
+};
+
 const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -91,35 +123,6 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
     fetch();
   }, [selectedDay, service.id]);
 
-  const getTimes = () => {
-    if (!selectedDay) return;
-
-    const opening = add(selectedDay, { hours: 9 });
-    const closing = add(selectedDay, { hours: 18 });
-    const interval = 30;
-
-    const times: Date[] = [];
-
-    for (let i = opening; i <= closing; i = add(i, { minutes: interval })) {
-      if (
-        !dayBookings.some(function (booking) {
-          return isEqual(i, booking.date);
-        })
-      ) {
-        if (
-          !isEqual(selectedDay, startOfDay(new Date()))
-            ? isFuture(selectedDay) && times.push(i)
-            : isAfter(i, new Date()) && times.push(i)
-        ) {
-        }
-      }
-    }
-
-    return times;
-  };
-
-  const times = getTimes();
-
   const handleCreateBooking = async () => {
     try {
       if (!selectedDay || !selectedTime) return;
@@ -141,6 +144,14 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
       return toast.error("Erro ao criar a reserva!");
     }
   };
+
+  const timeList = useMemo(() => {
+    if (!selectedDay) return [];
+    return getTimes({
+      dayBookings,
+      selectedDay,
+    });
+  }, [dayBookings, selectedDay]);
 
   return (
     <>
@@ -212,9 +223,10 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                       }}
                     />
                   </div>
-                  {times && times?.length > 0 && (
-                    <div className="flex gap-2 overflow-x-auto border-b border-solid border-gray-300 p-5 [&::-webkit-scrollbar]:hidden">
-                      {times.map((time, i) => (
+
+                  <div className="flex gap-2 overflow-x-auto border-b border-solid border-gray-300 p-5 [&::-webkit-scrollbar]:hidden">
+                    {timeList && timeList?.length > 0 ? (
+                      timeList.map((time, i) => (
                         <Button
                           key={`${time}-${i}`}
                           className={`rounded-full ${selectedTime && isEqual(selectedTime, time) && `border border-secondary`}`}
@@ -227,9 +239,13 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                         >
                           {format(time, "kk:mm")}
                         </Button>
-                      ))}
-                    </div>
-                  )}
+                      ))
+                    ) : (
+                      <p className="text-center text-sm">
+                        Não há horários disponíveis para esse dia
+                      </p>
+                    )}
+                  </div>
 
                   {selectedDay && selectedTime && (
                     <div className="flex flex-col">
