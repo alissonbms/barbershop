@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Booking from "./_components/ui/booking";
+import BookingItem from "./_components/ui/booking-item";
 import SectionTitle from "./_components/ui/section-title";
 import { prisma } from "./_lib/prisma";
 import BarbershopItem from "./_components/ui/barbershop-item";
@@ -21,6 +21,19 @@ export default async function Home() {
   const popularBarbershops = await prisma.barbershop.findMany({
     orderBy: {
       name: "desc",
+    },
+  });
+
+  const bookings = await prisma.booking.findMany({
+    where: {
+      userId: session?.user?.id,
+    },
+    include: {
+      service: {
+        include: {
+          barbershop: true,
+        },
+      },
     },
   });
 
@@ -66,8 +79,16 @@ export default async function Home() {
           />
         </div>
 
-        <SectionTitle title="Agendamentos" className="mt-6" />
-        <Booking />
+        {bookings.length > 0 && (
+          <>
+            <SectionTitle title="Reservas" className="mt-6" />
+            <div className="flex flex-row gap-4 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
+              {bookings.map((booking) => (
+                <BookingItem key={booking.id} booking={booking} />
+              ))}
+            </div>
+          </>
+        )}
 
         <SectionTitle title="Recomendadas" className="mt-6" />
         <div className="flex flex-row gap-4 overflow-x-scroll [&::-webkit-scrollbar]:hidden">

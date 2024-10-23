@@ -73,13 +73,17 @@ const SidebarSheet = async () => {
             </Link>
           </Button>
         </SheetClose>
-
-        <Button
-          variant="ghost"
-          className="flex items-center justify-start gap-2 hover:bg-inherit hover:text-secondary"
-        >
-          <CalendarFoldIcon size={18} /> <p>Agendamentos</p>
-        </Button>
+        {session?.user && (
+          <Button
+            asChild
+            variant="ghost"
+            className="flex items-center justify-start gap-2 hover:bg-inherit hover:text-secondary"
+          >
+            <Link href="/bookings">
+              <CalendarFoldIcon size={18} /> <p>Reservas</p>
+            </Link>
+          </Button>
+        )}
       </div>
 
       <QuickSearch sheet={true} />
