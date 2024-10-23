@@ -18,6 +18,7 @@ const HeroSection = ({ barbershop }: HeroSectionProps) => {
           src={barbershop!.imageUrl}
           alt={barbershop!.name}
           fill
+          sizes="100vw"
           className="object-cover"
         />
 

@@ -74,6 +74,7 @@ export default async function Home() {
           <Image
             src="/banner-1.png"
             fill
+            sizes="100vw"
             alt="agende nos melhores, atendimento excepcional, barbeiro esperando clientes"
             className="rounded-xl object-cover"
           />
