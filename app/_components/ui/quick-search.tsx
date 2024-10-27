@@ -40,12 +40,12 @@ const QuickSearch = ({ sheet }: QuickSearchProps) => {
           ))}
         </div>
       ) : (
-        <div className="flex gap-2.5 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+        <div className="gap-2.5 max-xl:flex max-xl:overflow-x-auto xl:grid xl:grid-cols-3 max-xl:[&::-webkit-scrollbar]:hidden">
           {quickSearchOptions.map((quickSearchOption) => (
             <Button
               key={quickSearchOption.title}
               variant="secondary"
-              className="flex items-center gap-1.5 px-5"
+              className="flex w-full items-center gap-1.5 px-5 xl:py-5"
               onClick={() =>
                 router.push(`/barbershops/?service=${quickSearchOption.title}`)
               }

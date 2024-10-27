@@ -46,14 +46,18 @@ const Search = () => {
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
-                <Input placeholder="Faça sua busca..." {...field} />
+                <Input
+                  placeholder="Buscar barbearias..."
+                  {...field}
+                  className="xl:py-5 xl:text-base"
+                />
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">
+        <Button type="submit" className="xl:py-5">
           <SearchIcon />
         </Button>
       </form>
