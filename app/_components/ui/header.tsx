@@ -10,8 +10,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import Link from "next/link";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { LogOut } from "./logout-button";
+import Search from "./search";
 
-const Header = async () => {
+interface HeaderProps {
+  searchBar?: boolean;
+}
+
+const Header = async ({ searchBar }: HeaderProps) => {
   const session = await auth();
   return (
     <header>
@@ -23,17 +28,25 @@ const Header = async () => {
             </Link>
           </h1>
 
-          <Sheet>
-            <SheetTrigger asChild className="lg:hidden">
-              <Button
-                size="icon"
-                className="bg-gradient-to-tl from-[#554023] to-[#C99846]"
-              >
-                <MenuIcon size={28} />
-              </Button>
-            </SheetTrigger>
-            <SidebarSheet />
-          </Sheet>
+          <div className="lg:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  size="icon"
+                  className="bg-gradient-to-tr from-[#554023] to-[#C99846]"
+                >
+                  <MenuIcon size={28} />
+                </Button>
+              </SheetTrigger>
+              <SidebarSheet />
+            </Sheet>
+          </div>
+
+          {searchBar && (
+            <div className="my-6 hidden w-[30%] lg:block">
+              <Search />
+            </div>
+          )}
 
           {session?.user ? (
             <div className="flex items-center gap-4 max-lg:hidden">

@@ -3,7 +3,7 @@ import { Card, CardContent } from "./card";
 import { Avatar, AvatarImage } from "./avatar";
 import { Badge } from "./badge";
 import { format, isFuture } from "date-fns";
-import { BookingProps } from "@/app/_constants/booking";
+import { BookingProps } from "@/app/_types/booking";
 
 const BookingItem = ({ booking }: BookingProps) => {
   const isConfirmed = isFuture(booking.date);

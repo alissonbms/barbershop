@@ -49,7 +49,7 @@ const Search = () => {
                 <Input
                   placeholder="Buscar barbearias..."
                   {...field}
-                  className="xl:py-5 xl:text-base"
+                  className="bg-background xl:py-5 xl:text-base"
                 />
               </FormControl>
 

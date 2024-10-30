@@ -13,25 +13,28 @@ interface HeroSectionProps {
 const HeroSection = ({ barbershop }: HeroSectionProps) => {
   return (
     <div>
-      <div className="relative h-[250px] w-full">
+      <div className="relative h-[250px] w-full lg:h-[350px]">
         <Image
           src={barbershop!.imageUrl}
           alt={barbershop!.name}
           fill
           sizes="100vw"
-          className="object-cover"
+          quality={100}
+          className="object-contain max-lg:bg-card max-sm:object-cover lg:object-cover"
+          priority
         />
+        <div className="lg:hidden">
+          <BackButton />
 
-        <BackButton />
-
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button size="icon" className="absolute right-4 top-4">
-              <MenuIcon />
-            </Button>
-          </SheetTrigger>
-          <SidebarSheet />
-        </Sheet>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button size="icon" className="absolute right-4 top-4">
+                <MenuIcon />
+              </Button>
+            </SheetTrigger>
+            <SidebarSheet />
+          </Sheet>
+        </div>
       </div>
     </div>
   );

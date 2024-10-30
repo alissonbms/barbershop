@@ -16,7 +16,7 @@ import BookingItem from "./booking-item";
 import { cn } from "@/app/_lib/utils";
 import { Button } from "./button";
 import BookingDeleteButton from "./booking-delete-button";
-import { BookingProps } from "@/app/_constants/booking";
+import { BookingProps } from "@/app/_types/booking";
 
 interface BookingSheetProps extends BookingProps {
   style?: string;
@@ -32,7 +32,7 @@ const BookingSheet = ({ booking, style }: BookingSheetProps) => {
       <SheetTrigger className={cn(style)}>
         <BookingItem booking={booking} />
       </SheetTrigger>
-      <SheetContent className="flex h-full w-[85%] flex-col bg-background">
+      <SheetContent className="flex h-full w-[85%] flex-col bg-background lg:min-w-[25%]">
         <div>
           <SheetHeader>
             <SheetTitle className="mb-6 text-left">

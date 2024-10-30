@@ -51,7 +51,7 @@ const BookingsPage = async () => {
   });
   return (
     <>
-      <Header />
+      <Header searchBar={true} />
       <div className="w-full px-5 lg:mx-auto lg:max-w-[1000px]">
         <div className="flex items-center gap-2 pt-5 max-md:justify-center">
           <h1 className="text-xl font-bold">Minhas reservas</h1>

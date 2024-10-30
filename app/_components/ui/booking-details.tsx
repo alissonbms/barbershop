@@ -7,7 +7,8 @@ import { Badge } from "./badge";
 import { Card, CardContent } from "./card";
 import { Avatar, AvatarImage } from "./avatar";
 import PhoneItem from "@/app/barbershops/[id]/_components/phone-item";
-import { BookingProps } from "@/app/_constants/booking";
+import { BookingProps } from "@/app/_types/booking";
+import Link from "next/link";
 
 const BookingDetails = ({ booking }: BookingProps) => {
   const isConfirmed = isFuture(booking.date);
@@ -31,7 +32,9 @@ const BookingDetails = ({ booking }: BookingProps) => {
               <AvatarImage src={barbershop.imageUrl} />
             </Avatar>
             <div>
-              <h3 className="font-bold">{barbershop.name}</h3>
+              <Link href={`/barbershops/${barbershop.id}`}>
+                <h3 className="font-bold">{barbershop.name}</h3>
+              </Link>
               <p className="text-xs">{barbershop.address}</p>
             </div>
           </CardContent>

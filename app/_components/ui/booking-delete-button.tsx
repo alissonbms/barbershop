@@ -14,8 +14,8 @@ import {
 } from "@/app/_components/ui/alert-dialog";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "./button";
-import { BookingProps } from "@/app/_constants/booking";
 import { toast } from "sonner";
+import { BookingProps } from "@/app/_types/booking";
 
 interface BookingDeleteButtonProps extends BookingProps {
   setIsSheetOpen?: Dispatch<SetStateAction<boolean>>;

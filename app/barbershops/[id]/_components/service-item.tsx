@@ -191,7 +191,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                 <Button size="sm" onClick={handleBookingClick}>
                   Reservar
                 </Button>
-                <SheetContent className="bg-background px-2">
+                <SheetContent className="bg-background px-2 lg:min-w-[25%]">
                   <SheetHeader>
                     <SheetTitle>Fazer reserva</SheetTitle>
                   </SheetHeader>

@@ -14,7 +14,7 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <div className="mx-auto flex flex-col xl:max-w-[1720px]">
+      <div className="flex flex-col xl:mx-auto xl:max-w-[1720px]">
         <div className="flex flex-1 flex-col p-5 text-[#3a3a38]">
           <div className="xl:mt-5 xl:flex xl:gap-20">
             <div
