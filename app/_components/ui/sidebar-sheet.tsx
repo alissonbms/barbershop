@@ -54,7 +54,7 @@ const SidebarSheet = async () => {
                 <LogInIcon />
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[80%] rounded-lg">
+            <DialogContent className="w-[75%] rounded-lg">
               <SignInDialog />
             </DialogContent>
           </Dialog>
@@ -89,7 +89,9 @@ const SidebarSheet = async () => {
       <QuickSearch sheet={true} />
 
       {session?.user ? (
-        <LogOut />
+        <div className="border-t border-solid border-gray-300 px-5 pt-5">
+          <LogOut />
+        </div>
       ) : (
         <div className="flex border-t border-solid border-gray-300 px-5 pt-5">
           <Button

@@ -1,15 +1,22 @@
-import { MenuIcon } from "lucide-react";
+import { CalendarFoldIcon, MenuIcon, UserIcon } from "lucide-react";
 import { Card, CardContent } from "./card";
 import { Button } from "./button";
 import { Sheet, SheetTrigger } from "./sheet";
 import SidebarSheet from "./sidebar-sheet";
+import { auth } from "@/app/_lib/auth";
+import { Dialog, DialogContent, DialogTrigger } from "./dialog";
+import SignInDialog from "./sign-in-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import Link from "next/link";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { LogOut } from "./logout-button";
 
-const Header = () => {
+const Header = async () => {
+  const session = await auth();
   return (
     <header>
-      <Card className="w-full">
-        <CardContent className="flex flex-row items-center justify-between p-5">
+      <Card className="w-full rounded-none">
+        <CardContent className="flex h-[76px] flex-row items-center justify-between rounded-none p-5 py-0">
           <h1 className="inline-block bg-gradient-to-tl from-[#554023] to-[#C99846] bg-clip-text text-2xl font-semibold uppercase leading-none tracking-tighter text-transparent">
             <Link href="/">
               Davies <span className="font-bold">barber</span>
@@ -17,7 +24,7 @@ const Header = () => {
           </h1>
 
           <Sheet>
-            <SheetTrigger asChild>
+            <SheetTrigger asChild className="lg:hidden">
               <Button
                 size="icon"
                 className="bg-gradient-to-tl from-[#554023] to-[#C99846]"
@@ -27,6 +34,54 @@ const Header = () => {
             </SheetTrigger>
             <SidebarSheet />
           </Sheet>
+
+          {session?.user ? (
+            <div className="flex items-center gap-4 max-lg:hidden">
+              <Button asChild className="flex items-center gap-2">
+                <Link href="/bookings">
+                  <CalendarFoldIcon size={18} /> <p>Reservas</p>
+                </Link>
+              </Button>
+              <Popover>
+                <PopoverTrigger>
+                  <div className="flex items-center gap-3">
+                    <Avatar>
+                      <AvatarFallback>
+                        {session.user.name?.[0].toUpperCase()}
+                      </AvatarFallback>
+
+                      {session.user.image && (
+                        <AvatarImage src={session.user.image} />
+                      )}
+                    </Avatar>
+
+                    <div className="flex flex-col gap-0.5">
+                      <p className="font-bold">{session.user.name}</p>
+                      <span className="text-xs text-gray_primary">
+                        {session.user.email}
+                      </span>
+                    </div>
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="mx-auto mt-2 flex h-fit w-fit bg-background p-0">
+                  <LogOut />
+                </PopoverContent>
+              </Popover>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between gap-3 py-5 max-lg:hidden">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="flex items-center gap-2">
+                    <UserIcon size={18} /> <p>Perfil</p>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-[75%] rounded-lg">
+                  <SignInDialog />
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
         </CardContent>
       </Card>
     </header>

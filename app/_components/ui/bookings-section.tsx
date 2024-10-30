@@ -1,9 +1,9 @@
 import Image from "next/image";
-import BookingItem from "./booking-item";
 import { ScrollArea, ScrollBar } from "./scroll-area";
 import SectionTitle from "./section-title";
 import { auth } from "@/app/_lib/auth";
 import { prisma } from "@/app/_lib/prisma";
+import BookingSheet from "./booking-sheet";
 
 const BookingsSection = async () => {
   const session = await auth();
@@ -40,7 +40,11 @@ const BookingsSection = async () => {
               <ScrollArea className="h-96 w-full max-xl:h-fit">
                 <div className="flex gap-4 xl:flex-col [&::-webkit-scrollbar]:hidden">
                   {confirmedBookings.map((booking) => (
-                    <BookingItem key={booking.id} booking={booking} />
+                    <BookingSheet
+                      style="min-w-[350px]"
+                      key={booking.id}
+                      booking={booking}
+                    />
                   ))}
                 </div>
                 <ScrollBar orientation="horizontal" />
@@ -55,7 +59,11 @@ const BookingsSection = async () => {
               <ScrollArea className="h-96 w-full max-xl:h-fit">
                 <div className="flex gap-4 xl:flex-col [&::-webkit-scrollbar]:hidden">
                   {confirmedBookings.map((booking) => (
-                    <BookingItem key={booking.id} booking={booking} />
+                    <BookingSheet
+                      style="min-w-[350px]"
+                      key={booking.id}
+                      booking={booking}
+                    />
                   ))}
                 </div>
                 <ScrollBar orientation="horizontal" />

@@ -23,6 +23,8 @@ import {
   isAfter,
   isEqual,
   isFuture,
+  isSaturday,
+  isSunday,
   isToday,
   set,
 } from "date-fns";
@@ -33,6 +35,7 @@ import { Dialog, DialogContent } from "@/app/_components/ui/dialog";
 import SignInDialog from "@/app/_components/ui/sign-in-dialog";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ScrollArea, ScrollBar } from "@/app/_components/ui/scroll-area";
 
 interface ServiceItemProps {
   service: Service;
@@ -72,6 +75,8 @@ const getTimes = ({ selectedDay, dayBookings }: GetTimesProps) => {
 };
 
 const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
+  const isClosedInSaturday = true;
+  const isClosedInSunday = true;
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -191,23 +196,29 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                     <SheetTitle>Fazer reserva</SheetTitle>
                   </SheetHeader>
 
-                  <div className="border-b border-solid border-gray-300 py-5">
+                  <div className="min-w-full border-b border-solid border-gray-300 py-5">
                     <Calendar
+                      className="flex h-full w-full"
+                      classNames={{
+                        months:
+                          "flex w-full flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 flex-1",
+                        month: "space-y-4 w-full flex flex-col",
+                        table: "w-full h-full border-collapse space-y-1",
+                        head_row: "",
+                        row: "w-full mt-2",
+                      }}
                       fromDate={new Date()}
                       selected={selectedDay}
+                      disabled={(date) =>
+                        (isClosedInSaturday && isSaturday(date)) ||
+                        (isClosedInSunday && isSunday(date))
+                      }
                       onSelect={handleDateSelect}
                       mode="single"
                       locale={ptBR}
                       styles={{
                         head_cell: {
-                          width: "100%",
                           textTransform: "capitalize",
-                        },
-                        cell: {
-                          width: "100%",
-                        },
-                        button: {
-                          width: "80%",
                         },
                         nav_button_previous: {
                           width: "32px",
@@ -224,28 +235,31 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                     />
                   </div>
 
-                  <div className="flex gap-2 overflow-x-auto border-b border-solid border-gray-300 p-5 [&::-webkit-scrollbar]:hidden">
-                    {timeList && timeList?.length > 0 ? (
-                      timeList.map((time, i) => (
-                        <Button
-                          key={`${time}-${i}`}
-                          className={`rounded-full ${selectedTime && isEqual(selectedTime, time) && `border border-secondary`}`}
-                          variant={
-                            selectedTime && isEqual(selectedTime, time)
-                              ? "secondary"
-                              : "outline"
-                          }
-                          onClick={() => handleTimeSelect(time)}
-                        >
-                          {format(time, "kk:mm")}
-                        </Button>
-                      ))
-                    ) : (
-                      <p className="text-center text-sm">
-                        Não há horários disponíveis para esse dia
-                      </p>
-                    )}
-                  </div>
+                  <ScrollArea className="h-fit w-full">
+                    <div className="flex gap-2 overflow-x-auto border-b border-solid border-gray-300 p-5 [&::-webkit-scrollbar]:hidden">
+                      {timeList && timeList?.length > 0 ? (
+                        timeList.map((time, i) => (
+                          <Button
+                            key={`${time}-${i}`}
+                            className={`rounded-full ${selectedTime && isEqual(selectedTime, time) && `border border-secondary`}`}
+                            variant={
+                              selectedTime && isEqual(selectedTime, time)
+                                ? "secondary"
+                                : "outline"
+                            }
+                            onClick={() => handleTimeSelect(time)}
+                          >
+                            {format(time, "kk:mm")}
+                          </Button>
+                        ))
+                      ) : (
+                        <p className="text-center text-sm">
+                          Não há horários disponíveis para esse dia
+                        </p>
+                      )}
+                    </div>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
 
                   {selectedDay && selectedTime && (
                     <div className="flex flex-col">
@@ -291,7 +305,10 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                       </div>
                       <SheetFooter className="px-5">
                         <SheetClose asChild>
-                          <Button onClick={handleCreateBooking}>
+                          <Button
+                            className="w-full"
+                            onClick={handleCreateBooking}
+                          >
                             Reservar
                           </Button>
                         </SheetClose>
@@ -309,7 +326,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
         open={isSignInDialogOpen}
         onOpenChange={(open) => setIsSignInDialogOpen(open)}
       >
-        <DialogContent className="max-w-[80%] rounded-lg">
+        <DialogContent className="w-[75%] rounded-lg">
           <SignInDialog />
         </DialogContent>
       </Dialog>

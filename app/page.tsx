@@ -1,15 +1,10 @@
 import Image from "next/image";
-import BookingItem from "./_components/ui/booking-item";
-import SectionTitle from "./_components/ui/section-title";
-import { prisma } from "./_lib/prisma";
-import BarbershopItem from "./_components/ui/barbershop-item";
 import QuickSearch from "./_components/ui/quick-search";
 import { auth } from "@/app/_lib/auth";
 import Search from "@/app/_components/ui/search";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import Header from "@/app/_components/ui/header";
-import { ScrollArea, ScrollBar } from "./_components/ui/scroll-area";
 import BarbershopsSection from "./_components/ui/barbershops-section";
 import BookingsSection from "./_components/ui/bookings-section";
 
