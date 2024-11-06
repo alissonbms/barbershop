@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { ScrollArea, ScrollBar } from "./scroll-area";
 import SectionTitle from "./section-title";
-import { auth } from "@/app/_lib/auth";
 import { prisma } from "@/app/_lib/prisma";
 import BookingSheet from "./booking-sheet";
+import { notFound, redirect } from "next/navigation";
+import { getSession } from "@/app/_actions/getSession";
 
 const BookingsSection = async () => {
-  const session = await auth();
+  const session = await getSession();
 
   const confirmedBookings = await prisma.booking.findMany({
     where: {
@@ -43,7 +44,7 @@ const BookingsSection = async () => {
                     <BookingSheet
                       style="min-w-[350px]"
                       key={booking.id}
-                      booking={booking}
+                      booking={JSON.parse(JSON.stringify(booking))}
                     />
                   ))}
                 </div>
@@ -62,7 +63,7 @@ const BookingsSection = async () => {
                     <BookingSheet
                       style="min-w-[350px]"
                       key={booking.id}
-                      booking={booking}
+                      booking={JSON.parse(JSON.stringify(booking))}
                     />
                   ))}
                 </div>

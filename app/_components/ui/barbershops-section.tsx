@@ -20,8 +20,11 @@ const BarbershopsSection = async () => {
       <SectionTitle title="Recomendadas" className="mt-6" />
       <ScrollArea className="h-fit w-full">
         <div className="flex flex-row gap-4 overflow-x-auto pb-3 [&::-webkit-scrollbar]:hidden">
-          {(await barbershops).map((barbershop) => (
-            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+          {barbershops.map((barbershop) => (
+            <BarbershopItem
+              key={barbershop.id}
+              barbershop={JSON.parse(JSON.stringify(barbershop))}
+            />
           ))}
         </div>
         <ScrollBar orientation="horizontal" />
@@ -33,7 +36,7 @@ const BarbershopsSection = async () => {
           {popularBarbershops.map((popularBarbershop) => (
             <BarbershopItem
               key={popularBarbershop.id}
-              barbershop={popularBarbershop}
+              barbershop={JSON.parse(JSON.stringify(popularBarbershop))}
             />
           ))}
         </div>

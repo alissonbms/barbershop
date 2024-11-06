@@ -64,16 +64,22 @@ const UserBookings = ({
                 className="w-full max-md:hidden"
                 onClick={() => handleSelectBookingClick(i, "confirmed")}
               >
-                <BookingItem booking={booking} />
+                <BookingItem booking={JSON.parse(JSON.stringify(booking))} />
               </button>
               <div className="w-full md:hidden">
-                <BookingSheet style="min-w-[350px]" booking={booking} />
+                <BookingSheet
+                  style="min-w-[350px]"
+                  booking={JSON.parse(JSON.stringify(booking))}
+                />
               </div>
             </div>
           ))}
         </div>
 
-        <SectionTitle title="Finalizadas" className="mt-6" />
+        {finishedBookings.length > 0 && (
+          <SectionTitle title="Finalizadas" className="mt-6" />
+        )}
+
         <div className="flex flex-col gap-4">
           {finishedBookings.map((booking, i) => (
             <div key={booking.id}>
@@ -81,11 +87,14 @@ const UserBookings = ({
                 className="w-full max-md:hidden"
                 onClick={() => handleSelectBookingClick(i, "finished")}
               >
-                <BookingItem booking={booking} />
+                <BookingItem booking={JSON.parse(JSON.stringify(booking))} />
               </button>
 
               <div className="w-full md:hidden">
-                <BookingSheet style="min-w-[350px]" booking={booking} />
+                <BookingSheet
+                  style="min-w-[350px]"
+                  booking={JSON.parse(JSON.stringify(booking))}
+                />
               </div>
             </div>
           ))}

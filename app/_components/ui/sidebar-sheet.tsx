@@ -2,6 +2,7 @@ import { CalendarFoldIcon, HomeIcon, InfoIcon, LogInIcon } from "lucide-react";
 import {
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
 } from "@/app/_components/ui/sheet";
@@ -12,20 +13,20 @@ import {
 } from "@/app/_components/ui/avatar";
 import Link from "next/link";
 import { Button } from "./button";
-import { Dialog, DialogContent, DialogTrigger } from "./dialog";
-import { auth } from "@/app/_lib/auth";
 import { LogOut } from "./logout-button";
 import QuickSearch from "./quick-search";
-import SignInDialog from "./sign-in-dialog";
+import { getSession } from "@/app/_actions/getSession";
+import { redirect } from "next/navigation";
 
 const SidebarSheet = async () => {
-  const session = await auth();
+  const session = await getSession();
 
   return (
     <SheetContent className="overflow-y-auto bg-background">
       <SheetHeader>
         <SheetTitle className="text-left">Menu</SheetTitle>
       </SheetHeader>
+      <SheetDescription aria-hidden />
 
       {session?.user ? (
         <div className="flex items-center gap-3 border-b border-solid border-gray-300 py-5">
@@ -46,18 +47,13 @@ const SidebarSheet = async () => {
         </div>
       ) : (
         <div className="flex items-center justify-between gap-3 border-b border-solid border-gray-300 py-5">
-          <h2 className="py-2 text-lg font-bold">Olá, faça seu login!</h2>
+          <h2 className="py-2 text-lg font-bold">Olá, entre na plataforma!</h2>
 
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button size="icon">
-                <LogInIcon />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="w-[75%] rounded-lg">
-              <SignInDialog />
-            </DialogContent>
-          </Dialog>
+          <Button size="icon" asChild>
+            <Link href="/auth/signup">
+              <LogInIcon />
+            </Link>
+          </Button>
         </div>
       )}
 
@@ -89,14 +85,25 @@ const SidebarSheet = async () => {
       <QuickSearch sheet={true} />
 
       {session?.user ? (
-        <div className="border-t border-solid border-gray-300 px-5 pt-5">
-          <LogOut />
+        <div className="flex flex-col gap-4 p-5">
+          <div className="w-full border-t border-solid border-gray-300 pt-5">
+            <LogOut />
+          </div>
+          <div className="">
+            <Button
+              variant="secondary"
+              asChild
+              className="w-full max-sm:text-xs max-sm:font-bold"
+            >
+              <Link href={`/owner/license`}>Criar uma barbearia (R$)</Link>
+            </Button>
+          </div>
         </div>
       ) : (
-        <div className="flex border-t border-solid border-gray-300 px-5 pt-5">
+        <div className="flex border-t border-solid border-gray-300 p-5">
           <Button
             variant="secondary"
-            className="flex w-full items-center justify-start gap-2"
+            className="flex w-full items-center justify-start gap-2 max-sm:text-xs max-sm:font-bold"
           >
             <InfoIcon size={18} /> <p>Sobre a Davies Barber</p>
           </Button>

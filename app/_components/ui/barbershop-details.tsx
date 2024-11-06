@@ -21,6 +21,7 @@ const BarbershopDetails = ({ barbershop }: BarbershopDetailsProps) => {
             src={"/map.png"}
             fill
             sizes="100vw"
+            priority
             className="rounded-xl object-cover"
           />
 

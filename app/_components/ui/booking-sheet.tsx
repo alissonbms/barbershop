@@ -5,6 +5,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -33,6 +34,7 @@ const BookingSheet = ({ booking, style }: BookingSheetProps) => {
         <BookingItem booking={booking} />
       </SheetTrigger>
       <SheetContent className="flex h-full w-[85%] flex-col bg-background lg:min-w-[25%]">
+        <SheetDescription aria-hidden />
         <div>
           <SheetHeader>
             <SheetTitle className="mb-6 text-left">

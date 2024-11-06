@@ -23,6 +23,7 @@ const BookingDetails = ({ booking }: BookingProps) => {
           src={"/map.png"}
           fill
           sizes="100vw"
+          priority
           className="rounded-xl object-cover"
         />
 

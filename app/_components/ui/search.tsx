@@ -9,7 +9,7 @@ import { Button } from "./button";
 import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const formSchema = z.object({
+const signUpSchema = z.object({
   title: z
     .string()
     .trim()
@@ -23,14 +23,14 @@ const formSchema = z.object({
 
 const Search = () => {
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       title: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof signUpSchema>) {
     router.push(`/barbershops/?title=${values.title}`);
   }
 

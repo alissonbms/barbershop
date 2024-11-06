@@ -1,15 +1,15 @@
 import Image from "next/image";
 import QuickSearch from "./_components/ui/quick-search";
-import { auth } from "@/app/_lib/auth";
 import Search from "@/app/_components/ui/search";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import Header from "@/app/_components/ui/header";
 import BarbershopsSection from "./_components/ui/barbershops-section";
 import BookingsSection from "./_components/ui/bookings-section";
+import { getSession } from "./_actions/getSession";
 
 export default async function Home() {
-  const session = await auth();
+  const session = await getSession();
 
   return (
     <>
@@ -50,7 +50,7 @@ export default async function Home() {
               </div>
 
               <div className="flex-row gap-2 md:flex">
-                <div className="relative h-[160px] w-full md:h-[200px] xl:hidden">
+                <div className="relative h-[160px] w-full max-sm:h-[150px] md:h-[200px] xl:hidden">
                   <Image
                     src="/banner-3.png"
                     fill
@@ -65,7 +65,7 @@ export default async function Home() {
                     src="/banner-2.png"
                     fill
                     sizes="100vw"
-                    alt="agende nos melhores, atendimento excepcional, barbeiro esperando clientes"
+                    alt=" profissionais experientes, revisão de Davies Barber"
                     className="rounded-xl object-cover md:object-contain lg:object-cover"
                   />
                 </div>

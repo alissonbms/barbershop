@@ -35,7 +35,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
       </div>
       <div className="flex lg:mx-auto lg:max-w-[1200px] lg:gap-10 lg:p-5">
         <div className="flex-1 lg:float-start lg:min-w-[45%]">
-          <HeroSection barbershop={barbershop!} />
+          <HeroSection barbershop={JSON.parse(JSON.stringify(barbershop))!} />
           <div className="flex flex-col gap-3 max-lg:border-b-2 max-lg:border-solid max-lg:p-5 lg:mt-6">
             <div className="flex flex-col gap-1 lg:flex-row lg:justify-between">
               <div className="flex flex-col gap-2 max-lg:text-center lg:gap-6">
@@ -70,8 +70,8 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
               {barbershop.services.map((service) => (
                 <ServiceItem
                   key={service.id}
-                  service={service}
-                  barbershop={barbershop}
+                  service={JSON.parse(JSON.stringify(service))}
+                  barbershop={JSON.parse(JSON.stringify(barbershop))}
                 />
               ))}
             </div>
@@ -87,7 +87,9 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
           </div>
         </div>
         <div className="float-end hidden min-h-full min-w-[35%] max-w-[35%] lg:block">
-          <BarbershopDetails barbershop={barbershop} />
+          <BarbershopDetails
+            barbershop={JSON.parse(JSON.stringify(barbershop))}
+          />
         </div>
       </div>
     </>

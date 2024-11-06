@@ -51,7 +51,10 @@ const BarbershopsPage = async ({ searchParams }: BarbershopsPageProps) => {
 
         <div className="flex flex-wrap justify-center gap-4 lg:mt-4">
           {barbershops.map((barbershop) => (
-            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+            <BarbershopItem
+              key={barbershop.id}
+              barbershop={JSON.parse(JSON.stringify(barbershop))}
+            />
           ))}
         </div>
       </div>

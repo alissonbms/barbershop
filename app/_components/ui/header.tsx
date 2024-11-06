@@ -1,23 +1,29 @@
-import { CalendarFoldIcon, MenuIcon, UserIcon } from "lucide-react";
+import { CalendarFoldIcon, InfoIcon, MenuIcon, LogInIcon } from "lucide-react";
 import { Card, CardContent } from "./card";
 import { Button } from "./button";
 import { Sheet, SheetTrigger } from "./sheet";
 import SidebarSheet from "./sidebar-sheet";
-import { auth } from "@/app/_lib/auth";
-import { Dialog, DialogContent, DialogTrigger } from "./dialog";
-import SignInDialog from "./sign-in-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import Link from "next/link";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { LogOut } from "./logout-button";
 import Search from "./search";
+import { getSession } from "@/app/_actions/getSession";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./dialog";
 
 interface HeaderProps {
   searchBar?: boolean;
 }
 
 const Header = async ({ searchBar }: HeaderProps) => {
-  const session = await auth();
+  const session = await getSession();
+
   return (
     <header>
       <Card className="w-full rounded-none">
@@ -55,8 +61,8 @@ const Header = async ({ searchBar }: HeaderProps) => {
                   <CalendarFoldIcon size={18} /> <p>Reservas</p>
                 </Link>
               </Button>
-              <Popover>
-                <PopoverTrigger>
+              <Dialog>
+                <DialogTrigger>
                   <div className="flex items-center gap-3">
                     <Avatar>
                       <AvatarFallback>
@@ -75,24 +81,34 @@ const Header = async ({ searchBar }: HeaderProps) => {
                       </span>
                     </div>
                   </div>
-                </PopoverTrigger>
-                <PopoverContent className="mx-auto mt-2 flex h-fit w-fit bg-background p-0">
-                  <LogOut />
-                </PopoverContent>
-              </Popover>
+                </DialogTrigger>
+                <DialogContent className="rounded-lg max-sm:max-w-[85%]">
+                  <DialogHeader>
+                    <DialogTitle className="text-center">
+                      O que deseja fazer?
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="flex flex-col gap-2">
+                    <LogOut />
+                    <Button variant="secondary" asChild>
+                      <Link href={`/license`}>Criar uma barbearia (R$)</Link>
+                    </Button>
+                  </div>
+                  <DialogDescription aria-hidden />
+                </DialogContent>
+              </Dialog>
             </div>
           ) : (
             <div className="flex items-center justify-between gap-3 py-5 max-lg:hidden">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="flex items-center gap-2">
-                    <UserIcon size={18} /> <p>Perfil</p>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="w-[75%] rounded-lg">
-                  <SignInDialog />
-                </DialogContent>
-              </Dialog>
+              <Button className="flex items-center gap-2" asChild>
+                <Link href="/auth/signup">
+                  <LogInIcon size={18} /> <p>Entrar</p>
+                </Link>
+              </Button>
+
+              <Button className="flex w-full items-center justify-start gap-2">
+                <InfoIcon size={18} /> <p>Sobre a Davies Barber</p>
+              </Button>
             </div>
           )}
         </CardContent>

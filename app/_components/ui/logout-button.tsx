@@ -10,7 +10,7 @@ export function LogOut() {
     <div className="flex">
       <Button
         variant="secondary"
-        className="flex w-full items-center justify-start gap-2"
+        className="flex w-full items-center justify-center gap-2"
         onClick={handleLogoutClick}
       >
         <LogOutIcon size={18} /> <p>Sair da conta</p>

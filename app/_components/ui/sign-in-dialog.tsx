@@ -6,12 +6,12 @@ import { DialogDescription, DialogHeader, DialogTitle } from "./dialog";
 import { signIn } from "next-auth/react";
 
 const SignInDialog = () => {
-  const handleGoogleLoginClick = () => signIn("google");
+  const handleGoogleLoginClick = async () => await signIn("google");
 
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Fazer login na plataforma</DialogTitle>
+        <DialogTitle>Entrar na plataforma</DialogTitle>
         <DialogDescription>
           Conecte-se usando sua conta do Google
         </DialogDescription>

@@ -8,6 +8,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -31,10 +32,14 @@ import {
 import { createBooking } from "@/app/_actions/create-booking";
 import { getBookings } from "@/app/_actions/get-bookings";
 import { toast } from "sonner";
-import { Dialog, DialogContent } from "@/app/_components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+} from "@/app/_components/ui/dialog";
 import SignInDialog from "@/app/_components/ui/sign-in-dialog";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { ScrollArea, ScrollBar } from "@/app/_components/ui/scroll-area";
 
 interface ServiceItemProps {
@@ -111,7 +116,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
     if (session?.user) {
       return setIsBookingSheetOpen(true);
     }
-    return setIsSignInDialogOpen(true);
+    redirect("/auth/signin");
   };
 
   useEffect(() => {
@@ -129,6 +134,9 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
   }, [selectedDay, service.id]);
 
   const handleCreateBooking = async () => {
+    if (!session?.user) {
+      redirect("/auth/signin");
+    }
     try {
       if (!selectedDay || !selectedTime) return;
 
@@ -195,6 +203,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                   <SheetHeader>
                     <SheetTitle>Fazer reserva</SheetTitle>
                   </SheetHeader>
+                  <SheetDescription aria-hidden />
 
                   <div className="min-w-full border-b border-solid border-gray-300 py-5">
                     <Calendar
@@ -328,6 +337,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
       >
         <DialogContent className="w-[75%] rounded-lg">
           <SignInDialog />
+          <DialogDescription aria-hidden />
         </DialogContent>
       </Dialog>
     </>
