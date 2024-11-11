@@ -20,7 +20,7 @@ const HeroSection = ({ barbershop }: HeroSectionProps) => {
           fill
           sizes="100vw"
           quality={100}
-          className="object-contain max-lg:bg-card max-sm:object-cover lg:object-cover"
+          className="object-contain max-lg:bg-card max-sm:object-cover lg:rounded-xl lg:object-cover lg:shadow-lg"
           priority
         />
         <div className="lg:hidden">

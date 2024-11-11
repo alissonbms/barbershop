@@ -82,7 +82,7 @@ const Header = async ({ searchBar }: HeaderProps) => {
                     </div>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="rounded-lg max-sm:max-w-[85%]">
+                <DialogContent className="rounded-xl pb-2 pt-6 max-sm:max-w-[75%] md:max-w-[45%] lg:max-w-[25%]">
                   <DialogHeader>
                     <DialogTitle className="text-center">
                       O que deseja fazer?
@@ -91,7 +91,15 @@ const Header = async ({ searchBar }: HeaderProps) => {
                   <div className="flex flex-col gap-2">
                     <LogOut />
                     <Button variant="secondary" asChild>
-                      <Link href={`/license`}>Criar uma barbearia (R$)</Link>
+                      {session.user.role === "USER" ? (
+                        <Link href={`/membership`}>
+                          Criar uma barbearia (R$)
+                        </Link>
+                      ) : (
+                        <Link href={`/owner/barbershop`}>
+                          Gerenciar minha barbearia
+                        </Link>
+                      )}
                     </Button>
                   </div>
                   <DialogDescription aria-hidden />

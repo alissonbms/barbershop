@@ -50,7 +50,7 @@ const BookingDeleteButton = ({
           Deletar
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="max-w-[70%] rounded-xl md:max-w-[45%] lg:max-w-[35%]">
+      <AlertDialogContent className="rounded-xl max-sm:max-w-[75%] md:max-w-[45%] lg:max-w-[25%]">
         <AlertDialogHeader>
           <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
           <AlertDialogDescription>

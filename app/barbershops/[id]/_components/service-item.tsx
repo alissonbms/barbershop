@@ -29,7 +29,6 @@ import {
   isToday,
   set,
 } from "date-fns";
-import { createBooking } from "@/app/_actions/create-booking";
 import { getBookings } from "@/app/_actions/get-bookings";
 import { toast } from "sonner";
 import {
@@ -41,10 +40,13 @@ import SignInDialog from "@/app/_components/ui/sign-in-dialog";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import { ScrollArea, ScrollBar } from "@/app/_components/ui/scroll-area";
+import { createBookingCheckout } from "@/app/_actions/booking-checkout";
+import getStripe from "@/app/_utils/get-stripejs";
+import { createBooking } from "@/app/_actions/create-booking";
 
 interface ServiceItemProps {
   service: Service;
-  barbershop: Pick<Barbershop, "name">;
+  barbershop: Pick<Barbershop, "name" | "imageUrl" | "paymentMethod">;
 }
 
 interface GetTimesProps {
@@ -147,12 +149,43 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
         hours: hours,
       });
 
-      await createBooking({
-        serviceId: service.id,
-        date: newDate,
-      });
-      toast.success("Reserva criada com sucesso!");
-      return router.push("/");
+      if (barbershop.paymentMethod === "ON_LOCATION") {
+        const booking = await createBooking({
+          serviceId: service.id,
+          date: newDate,
+          type: "WITHOUT_PAYMENT",
+        });
+
+        toast.success("Reserva criada com sucesso!");
+        return router.push("/bookings");
+      }
+
+      if (barbershop.paymentMethod === "IN_ADVANCE") {
+        const userId = session.user.id;
+
+        const booking = await createBooking({
+          serviceId: service.id,
+          date: newDate,
+          type: "WITH_PAYMENT",
+        });
+
+        if (booking) {
+          const checkout = await createBookingCheckout({
+            userId,
+            date: newDate,
+            bookingId: booking.id,
+            service,
+            barbershopImage: barbershop.imageUrl,
+            barbershopName: barbershop.name,
+          });
+
+          const stripePromise = await getStripe();
+
+          stripePromise?.redirectToCheckout({
+            sessionId: checkout.id,
+          });
+        }
+      }
     } catch (error) {
       return toast.error("Erro ao criar a reserva!");
     }
@@ -170,23 +203,26 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
     <>
       <Card>
         <CardContent className="flex items-center gap-3 p-3">
-          <div className="relative max-h-[110px] min-h-[110px] min-w-[110px] max-w-[110px]">
+          <div className="relative max-h-[110px] min-h-[110px] min-w-[110px] max-w-[110px] lg:min-h-[120px] lg:min-w-[120px]">
             <Image
               src={service.imageUrl}
               alt={service.name}
               fill
+              quality={100}
               sizes="100vw"
-              className="rounded-lg object-cover"
+              className="rounded-xl object-contain"
             />
           </div>
           <div className="flex w-full flex-col gap-5">
             <div className="flex flex-col gap-2">
-              <h3 className="font-semibold">{service.name}</h3>
-              <p className="text-sm text-gray_primary">{service.description}</p>
+              <h3 className="font-semibold xl:text-lg">{service.name}</h3>
+              <p className="text-sm text-gray_primary xl:text-base">
+                {service.description}
+              </p>
             </div>
 
             <div className="flex items-center justify-between">
-              <p className="text-sm font-bold text-secondary">
+              <p className="text-sm font-bold text-secondary lg:text-base">
                 {Intl.NumberFormat("pt-BR", {
                   style: "currency",
                   currency: "BRL",
@@ -196,7 +232,10 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                 open={isBookingSheetOpen}
                 onOpenChange={handleOpenBookingSheetChange}
               >
-                <Button size="sm" onClick={handleBookingClick}>
+                <Button
+                  className="h-8 rounded-md px-3 text-xs lg:h-10 lg:rounded-md lg:px-8 lg:text-base"
+                  onClick={handleBookingClick}
+                >
                   Reservar
                 </Button>
                 <SheetContent className="bg-background px-2 lg:min-w-[25%]">
@@ -277,7 +316,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                           <CardContent className="flex flex-col gap-4 p-5">
                             <div className="flex items-center justify-between">
                               <h2 className="font-bold">{service.name}</h2>
-                              <p className="text-sm font-bold">
+                              <p className="text-sm font-bold lg:text-base">
                                 {Intl.NumberFormat("pt-BR", {
                                   style: "currency",
                                   currency: "BRL",

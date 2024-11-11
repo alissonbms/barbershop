@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 const handleCopyPhoneClick = (phone: string) => {
   navigator.clipboard.writeText(phone);
-  toast.success("Número de telefone copiado com sucesso!", { duration: 1000 });
+  toast.success("Número de telefone copiado com sucesso!");
 };
 
 interface PhoneItemProps {

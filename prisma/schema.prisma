@@ -9,18 +9,19 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  password      String?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  bookings      Booking[]
-  role          String    @default("USER")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id                String              @id @default(cuid())
+  name              String?
+  email             String              @unique
+  emailVerified     DateTime?
+  password          String?
+  image             String?
+  accounts          Account[]
+  sessions          Session[]
+  bookings          Booking[]
+  MembershipTracker MembershipTracker[]
+  role              Role                @default(USER)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 }
 
 model Account {
@@ -44,6 +45,34 @@ model Account {
   @@id([provider, providerAccountId])
 }
 
+enum Role {
+  USER
+  OWNERSIMPLE
+  OWNERADVANCED
+  OWNERPREMIUM
+}
+
+model MembershipTracker {
+  id           String     @id @default(cuid())
+  date         DateTime
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  membershipId String
+  membership   Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Membership {
+  id                String              @id @default(cuid())
+  name              String
+  description       String
+  price             Decimal             @db.Decimal(10, 2)
+  role              Role
+  advantages        String[]            @default([""])
+  MembershipTracker MembershipTracker[]
+}
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -64,14 +93,15 @@ model VerificationToken {
 }
 
 model Barbershop {
-  id          String    @id @default(uuid())
-  name        String
-  address     String
-  imageUrl    String
-  description String    @default("Seja bem-vindo à nossa barbearia, onde tradição e estilo se encontram em perfeita harmonia. Nossa equipe de mestres barbeiros transforma cortes de cabelo e barbas em obras de arte. Em um ambiente acolhedor, promovemos confiança, estilo e uma comunidade unida.")
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  services    Service[]
+  id            String                  @id @default(uuid())
+  name          String
+  address       String
+  imageUrl      String
+  description   String                  @default("Seja bem-vindo à nossa barbearia, onde tradição e estilo se encontram em perfeita harmonia. Nossa equipe de mestres barbeiros transforma cortes de cabelo e barbas em obras de arte. Em um ambiente acolhedor, promovemos confiança, estilo e uma comunidade unida.")
+  paymentMethod BarbershopPaymentMethod @default(ON_LOCATION)
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+  services      Service[]
 }
 
 model Service {
@@ -85,13 +115,25 @@ model Service {
   bookings     Booking[]
 }
 
+enum BarbershopPaymentMethod {
+  ON_LOCATION
+  IN_ADVANCE
+}
+
 model Booking {
-  id        String   @id @default(uuid())
+  id        String        @id @default(uuid())
   date      DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  status    BookingStatus @default(WAITING_FOR_PAYMENT)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   serviceId String
-  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  service   Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+}
+
+enum BookingStatus {
+  WAITING_FOR_PAYMENT
+  BOOKING_CONFIRMED
+
 }

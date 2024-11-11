@@ -8,11 +8,13 @@ import { redirect } from "next/navigation";
 interface CreateBookingProps {
   serviceId: string;
   date: Date;
+  type: "WITH_PAYMENT" | "WITHOUT_PAYMENT";
 }
 
 export const createBooking = async ({
   serviceId,
   date,
+  type,
 }: CreateBookingProps) => {
   const session = await getSession();
   const user = session?.user;
@@ -20,9 +22,22 @@ export const createBooking = async ({
     return redirect("/auth/signin");
   }
 
-  await prisma.booking.create({
-    data: { serviceId: serviceId, date: date, userId: user.id },
+  const booking = await prisma.booking.create({
+    data: {
+      serviceId: serviceId,
+      date: date,
+      userId: user.id,
+      status:
+        type === "WITHOUT_PAYMENT"
+          ? "BOOKING_CONFIRMED"
+          : "WAITING_FOR_PAYMENT",
+    },
   });
+
+  if (type === "WITH_PAYMENT") {
+    return booking;
+  }
+
   revalidatePath("/barbershops/[id]");
   revalidatePath("/bookings");
 };

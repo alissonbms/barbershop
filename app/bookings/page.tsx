@@ -15,6 +15,28 @@ const BookingsPage = async () => {
   const confirmedBookings = await prisma.booking.findMany({
     where: {
       userId: user.id,
+      status: "BOOKING_CONFIRMED",
+
+      date: {
+        gte: new Date(),
+      },
+    },
+    include: {
+      service: {
+        include: {
+          barbershop: true,
+        },
+      },
+    },
+    orderBy: {
+      date: "asc",
+    },
+  });
+
+  const waitingBookings = await prisma.booking.findMany({
+    where: {
+      userId: session?.user?.id,
+      status: "WAITING_FOR_PAYMENT",
       date: {
         gte: new Date(),
       },
@@ -59,14 +81,17 @@ const BookingsPage = async () => {
             <h1 className="text-xl font-bold">Minhas reservas</h1>
             <CalendarFoldIcon size={18} />
           </div>
-          {!finishedBookings.length && !confirmedBookings.length && (
-            <p className="mt-4 text-lg max-md:text-center">
-              Você ainda não realizou nenhuma reserva...
-            </p>
-          )}
+          {!finishedBookings.length &&
+            !confirmedBookings.length &&
+            !waitingBookings.length && (
+              <p className="mt-4 text-lg max-md:text-center">
+                Você ainda não realizou nenhuma reserva...
+              </p>
+            )}
 
           <UserBookings
             finishedBookings={JSON.parse(JSON.stringify(finishedBookings))}
+            waitingBookings={JSON.parse(JSON.stringify(waitingBookings))}
             confirmedBookings={JSON.parse(JSON.stringify(confirmedBookings))}
           />
         </div>

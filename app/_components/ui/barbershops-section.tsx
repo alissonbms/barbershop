@@ -4,23 +4,23 @@ import SectionTitle from "./section-title";
 import { prisma } from "@/app/_lib/prisma";
 
 const BarbershopsSection = async () => {
-  const barbershops = await prisma.barbershop.findMany({
-    orderBy: {
-      name: "asc",
+  const barbershops_payment_on_location = await prisma.barbershop.findMany({
+    where: {
+      paymentMethod: "ON_LOCATION",
     },
   });
-  const popularBarbershops = await prisma.barbershop.findMany({
-    orderBy: {
-      name: "desc",
+  const barbershops_payment_in_advance = await prisma.barbershop.findMany({
+    where: {
+      paymentMethod: "IN_ADVANCE",
     },
   });
 
   return (
     <div>
-      <SectionTitle title="Recomendadas" className="mt-6" />
+      <SectionTitle title="Barbearias que recebem no local" className="mt-6" />
       <ScrollArea className="h-fit w-full">
         <div className="flex flex-row gap-4 overflow-x-auto pb-3 [&::-webkit-scrollbar]:hidden">
-          {barbershops.map((barbershop) => (
+          {barbershops_payment_on_location.map((barbershop) => (
             <BarbershopItem
               key={barbershop.id}
               barbershop={JSON.parse(JSON.stringify(barbershop))}
@@ -30,13 +30,16 @@ const BarbershopsSection = async () => {
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <SectionTitle title="Populares" className="mt-6" />
+      <SectionTitle
+        title="Barbearias que cobram antecipadamente"
+        className="mt-6"
+      />
       <ScrollArea className="h-fit w-full">
         <div className="flex flex-row gap-4 overflow-x-auto pb-3 [&::-webkit-scrollbar]:hidden">
-          {popularBarbershops.map((popularBarbershop) => (
+          {barbershops_payment_in_advance.map((barbershop) => (
             <BarbershopItem
-              key={popularBarbershop.id}
-              barbershop={JSON.parse(JSON.stringify(popularBarbershop))}
+              key={barbershop.id}
+              barbershop={JSON.parse(JSON.stringify(barbershop))}
             />
           ))}
         </div>

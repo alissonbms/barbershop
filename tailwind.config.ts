@@ -19,6 +19,7 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        outline_color: "#faf3ea",
         gray_primary: "#374151",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

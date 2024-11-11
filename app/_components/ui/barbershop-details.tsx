@@ -25,7 +25,7 @@ const BarbershopDetails = ({ barbershop }: BarbershopDetailsProps) => {
             className="rounded-xl object-cover"
           />
 
-          <Card className="z-50 mx-5 mb-3 w-full">
+          <Card className="z-50 mx-5 mb-3 w-full bg-background">
             <CardContent className="flex items-center gap-3 px-5 py-3">
               <Avatar>
                 <AvatarImage src={barbershop.imageUrl} />

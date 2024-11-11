@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ptBR } from "date-fns/locale";
-import { format, isFuture } from "date-fns";
+import { format, isFuture, isPast } from "date-fns";
 import { Badge } from "./badge";
 import { Card, CardContent } from "./card";
 import { Avatar, AvatarImage } from "./avatar";
@@ -11,7 +11,9 @@ import { BookingProps } from "@/app/_types/booking";
 import Link from "next/link";
 
 const BookingDetails = ({ booking }: BookingProps) => {
-  const isConfirmed = isFuture(booking.date);
+  const isConfirmed = booking.status === "BOOKING_CONFIRMED";
+  const isWaiting = booking.status === "WAITING_FOR_PAYMENT";
+  const isInThePast = isPast(booking.date);
   const barbershop = booking.service.barbershop;
   const service = booking.service;
 
@@ -27,7 +29,7 @@ const BookingDetails = ({ booking }: BookingProps) => {
           className="rounded-xl object-cover"
         />
 
-        <Card className="z-50 mx-5 mb-3 w-full">
+        <Card className="z-50 mx-5 mb-3 w-full bg-background">
           <CardContent className="flex items-center gap-3 px-5 py-3">
             <Avatar>
               <AvatarImage src={barbershop.imageUrl} />
@@ -43,16 +45,27 @@ const BookingDetails = ({ booking }: BookingProps) => {
       </div>
 
       <div className="mt-6">
-        <Badge
-          variant={isConfirmed ? "default" : "outline"}
-          className={
-            isConfirmed
-              ? `w-fit bg-green-700`
-              : `w-fit border-secondary text-secondary`
-          }
-        >
-          {isConfirmed ? "Confirmada" : "Finalizada"}
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge
+            variant={isInThePast ? "outline" : "default"}
+            className={`w-fit ${
+              isInThePast
+                ? "border-secondary text-secondary"
+                : isConfirmed
+                  ? "bg-green-700"
+                  : "bg-red-400"
+            }`}
+          >
+            {isInThePast
+              ? "Finalizada"
+              : isConfirmed
+                ? "Confirmada"
+                : "Pendente..."}
+          </Badge>
+          {isInThePast && isWaiting && (
+            <span className="text-sm font-bold text-red-700">Não foi paga</span>
+          )}
+        </div>
 
         <Card className="mb-6 mt-3">
           <CardContent className="flex flex-col gap-4 p-5">

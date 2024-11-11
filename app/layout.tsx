@@ -27,7 +27,7 @@ export default function RootLayout({
             <div className="flex-1">{children}</div>
             <Footer />
           </SessionProvider>
-          <Toaster />
+          <Toaster position="bottom-center" />
         </div>
       </body>
     </html>

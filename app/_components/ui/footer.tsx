@@ -5,7 +5,7 @@ import Link from "next/link";
 const Footer = () => {
   return (
     <footer>
-      <Card className="text-center">
+      <Card className="rounded-none border-0 text-center">
         <CardContent className="py-4">
           <p className="text-sm">
             © 2023 Copyright{" "}

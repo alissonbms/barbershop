@@ -16,7 +16,7 @@ export default async function Home() {
       <Header />
       <div className="flex flex-col xl:mx-auto xl:max-w-[1720px]">
         <div className="flex flex-1 flex-col p-5 text-[#3a3a38]">
-          <div className="xl:mt-5 xl:flex xl:gap-20">
+          <div className="xl:mt-5 xl:flex xl:gap-6 2xl:gap-20">
             <div
               className={`xl:float-start xl:flex xl:min-h-full xl:flex-col ${session?.user ? `xl:min-w-[40%] 2xl:min-w-[45%]` : `xl:min-w-[55%] 2xl:min-w-[50%]`}`}
             >

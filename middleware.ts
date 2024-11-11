@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "./auth";
+import { getSession } from "./app/_actions/getSession";
 
 const authRoutes = ["/auth/signin", "/auth/signup", "/api/auth/signin"];
-const userRoutes = ["/bookings"];
+const userRoutes = ["/bookings, /membership"];
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   const isUserRoute = userRoutes.includes(path);
   const isAuthRoute = authRoutes.includes(path);
 
-  // 3. Decrypt the session from the cookie
-  const session = await auth();
+  const session = await getSession();
 
   if (isUserRoute && !session?.user) {
     return NextResponse.redirect(new URL("/auth/signin", req.nextUrl));
@@ -20,9 +20,16 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 
-  // 5. Redirect to /dashboard if the user is authenticated
-  if (req.nextUrl.pathname.startsWith("/owner")) {
-    return NextResponse.redirect(new URL("/license", req.nextUrl));
+  if (req.nextUrl.pathname.startsWith("/owner") && !session?.user) {
+    return NextResponse.redirect(new URL("/auth/signin", req.nextUrl));
+  }
+
+  if (
+    req.nextUrl.pathname.startsWith("/owner") &&
+    session?.user &&
+    session?.user?.role === "USER"
+  ) {
+    return NextResponse.redirect(new URL("/membership", req.nextUrl));
   }
 
   return NextResponse.next();

@@ -95,7 +95,7 @@ const SidebarSheet = async () => {
               asChild
               className="w-full max-sm:text-xs max-sm:font-bold"
             >
-              <Link href={`/owner/license`}>Criar uma barbearia (R$)</Link>
+              <Link href={`/membership`}>Criar uma barbearia (R$)</Link>
             </Button>
           </div>
         </div>
